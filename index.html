@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Homepage</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f4f4f9, #eaeff7);
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .header {
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin: 0;
+            color: #007BFF;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #555;
+            margin: 20px 0;
+        }
+
+        .enter-btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background: #007BFF;
+            color: white;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background 0.3s ease, transform 0.2s ease;
+            cursor: pointer;
+        }
+
+        .enter-btn:hover {
+            background: #0056b3;
+            transform: scale(1.1);
+        }
+
+        footer {
+            position: absolute;
+            bottom: 20px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        footer a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <div class="header">
+        <h1>Welcome to My Portfolio</h1>
+        <p>Explore my works in an interactive 3D gallery.</p>
+        <a class="enter-btn" href="gallery.html">Enter Gallery</a>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        &copy; 2024 My Portfolio. Designed with care. <a href="#">Contact Us</a>
+    </footer>
+</body>
+</html>
