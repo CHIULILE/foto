@@ -46,7 +46,7 @@
     </style>
 </head>
 <body>
-    <div class="info">Click on floating objects to learn more!</div>
+    <div class="info">Drag and click on the floating objects to view photos!</div>
     <a class="back-btn" href="index.html">Back to Home</a>
     <script>
         // Basic Three.js Setup
@@ -57,29 +57,95 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
 
-        // Add floating objects (e.g., cubes)
-        const objects = [];
-        const geometry = new THREE.BoxGeometry(1, 1, 1);
-        const material = new THREE.MeshBasicMaterial({ color: 0x007BFF });
+        // Add ambient light for general brightness
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
 
-        for (let i = 0; i < 10; i++) {
-            const cube = new THREE.Mesh(geometry, material);
-            cube.position.set(
-                (Math.random() - 0.5) * 10,
-                (Math.random() - 0.5) * 10,
-                (Math.random() - 0.5) * 10
-            );
-            scene.add(cube);
-            objects.push(cube);
-        }
-
-        // Light
+        // Add point light for additional illumination
         const light = new THREE.PointLight(0xffffff, 1, 100);
         light.position.set(10, 10, 10);
         scene.add(light);
 
+        // Add floating objects with textures
+        const objects = [];
+        const loader = new THREE.TextureLoader();
+        const photoTextures = [
+            'images/photo1.jpg', // Replace with your actual photo paths
+            'images/photo2.jpg',
+            'images/photo3.jpg',
+            'images/photo4.jpg'
+        ];
+
+        photoTextures.forEach((photo, index) => {
+            loader.load(
+                photo,
+                (texture) => {
+                    console.log(`Texture ${index + 1} loaded successfully.`);
+                    const material = new THREE.MeshBasicMaterial({
+                        map: texture,
+                        side: THREE.DoubleSide
+                    });
+
+                    const geometry = new THREE.BoxGeometry(1, 1, 1);
+                    const cube = new THREE.Mesh(geometry, [
+                        material,
+                        material,
+                        material,
+                        material,
+                        material,
+                        material
+                    ]);
+
+                    cube.position.set(
+                        (Math.random() - 0.5) * 10,
+                        (Math.random() - 0.5) * 10,
+                        (Math.random() - 0.5) * 10
+                    );
+
+                    scene.add(cube);
+                    objects.push(cube);
+                },
+                undefined,
+                (err) => {
+                    console.error(`Error loading texture ${index + 1}:`, err);
+                    const fallbackMaterial = new THREE.MeshBasicMaterial({
+                        color: 0xff0000,
+                        side: THREE.DoubleSide
+                    });
+
+                    const geometry = new THREE.BoxGeometry(1, 1, 1);
+                    const cube = new THREE.Mesh(geometry, [
+                        fallbackMaterial,
+                        fallbackMaterial,
+                        fallbackMaterial,
+                        fallbackMaterial,
+                        fallbackMaterial,
+                        fallbackMaterial
+                    ]);
+
+                    cube.position.set(
+                        (Math.random() - 0.5) * 10,
+                        (Math.random() - 0.5) * 10,
+                        (Math.random() - 0.5) * 10
+                    );
+
+                    scene.add(cube);
+                    objects.push(cube);
+                }
+            );
+        });
+
         // Camera position
         camera.position.z = 5;
+
+        // Drag controls
+        const dragControls = new THREE.DragControls(objects, camera, renderer.domElement);
+        dragControls.addEventListener('dragstart', function (event) {
+            event.object.material.emissive = new THREE.Color(0xaaaaaa);
+        });
+        dragControls.addEventListener('dragend', function (event) {
+            event.object.material.emissive = new THREE.Color(0x000000);
+        });
 
         // Animation loop
         function animate() {
@@ -106,7 +172,9 @@
             const intersects = raycaster.intersectObjects(objects);
 
             if (intersects.length > 0) {
-                alert('You clicked on a floating object!');
+                const clickedObject = intersects[0].object;
+                alert(`You clicked on a photo cube!`);
+                console.log(clickedObject);
             }
         });
 
