@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3D Gallery</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/110/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/110/controls/OrbitControls.js"></script>
     <style>
         body {
             margin: 0;
@@ -65,6 +66,12 @@
         const light = new THREE.PointLight(0xffffff, 1, 100);
         light.position.set(10, 10, 10);
         scene.add(light);
+
+        // Add OrbitControls for better navigation
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.1;
+        controls.rotateSpeed = 0.5;
 
         // Add floating objects with textures
         const objects = [];
@@ -156,6 +163,7 @@
                 obj.rotation.y += 0.01;
             });
 
+            controls.update(); // Update OrbitControls
             renderer.render(scene, camera);
         }
         animate();
